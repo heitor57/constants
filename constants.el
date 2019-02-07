@@ -1,7 +1,7 @@
 (setq constants-precision 100)
 (setq constants-game-true-color "Green")
 (setq constants-game-false-color "Red")
-
+(setq constants-game-current-constant nil) 
 (setq constants-game-buffer-name "constants-game")
 (setq constants `(
 		  (math
@@ -38,6 +38,14 @@
       )
     )
   )
+
+(defun get-constant-value-no-cat(key)
+  "Get constant value without category but is have more cost"
+  (let* ((cs (copy-tree constants))
+	 (constants (mapcan 'cdr cs)))
+    (cdr (assoc key constants))
+    )
+  )
 (defun constant-print(constant)
   (interactive "sName of constant: ")
   (message "Not implemented"))
@@ -50,24 +58,44 @@
      'face `(:foreground ,color))))
 (defun constants-game-checker()
   "Check if entry is equal to the constant number"
-  (let ((euler (get-constant-value 'math 'euler)))
-    (message "%s  == %s" (char-to-string (char-before)) (substring euler (- (point) 2) (- (point) 1)))
-    (if (equal (char-to-string (char-before)) (substring euler (- (point) 2) (- (point) 1)))
+  (let ((const (get-constant-value-no-cat (intern constants-game-current-constant))))
+    (message "%s  == %s" (char-to-string (char-before)) (substring const (- (point) 2) (- (point) 1)))
+    (if (equal (char-to-string (char-before)) (substring const (- (point) 2) (- (point) 1)))
 	(highlight-point (- (point) 1) constants-game-true-color)   
       (highlight-point (- (point) 1) constants-game-false-color)   
       )
     )
   )
+
+(defun x-open-me ()
+  "open a file, using current line as file name/path"
+  (interactive)
+  (switch-to-buffer
+   (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+  (setq constants-game-current-constant (buffer-name))
+(add-hook 'post-self-insert-hook 'constants-game-checker nil 'local)
+  )
+
+(defvar x-keymap nil "game option keymap")
+(setq x-keymap (make-sparse-keymap))
+(define-key x-keymap (kbd "RET") 'x-open-me)
+
 (defun constants-game()
   "Test your skills with memorization of constants numbers"
   (interactive)
-  (generate-new-buffer constants-game-buffer-name)
-  (display-buffer constants-game-buffer-name)
-  (with-current-buffer constants-game-buffer-name
-    (add-hook 'post-self-insert-hook 'constants-game-checker nil 'local))
-
+  (switch-to-buffer-other-window constants-game-buffer-name)
+  (erase-buffer)
+  
+  (let* ((cs (copy-tree constants))
+	 (constants-name (mapcar 'car (mapcan 'cdr cs)) ))
+    (mapcar
+     (lambda (x)
+       (let ((s (symbol-name x)))
+	 (put-text-property 0 (length s) 'face 'bold s)
+	 (put-text-property 0 (length s) 'keymap x-keymap s)
+	 (insert (format "%s\n" s))
+	 )
+       )
+     constants-name)
+    )
   )
-
-
-
-
