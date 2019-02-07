@@ -1,4 +1,8 @@
 (setq constants-precision 100)
+(setq constants-game-true-color "Green")
+(setq constants-game-false-color "Red")
+
+(setq constants-game-buffer-name "constants-game")
 (setq constants `(
 		  (math
 		   (pi . ,(calc-eval `("evalv(pi)" calc-internal-prec ,constants-precision)))
@@ -37,16 +41,31 @@
 (defun constant-print(constant)
   (interactive "sName of constant: ")
   (message "Not implemented"))
+(defun highlight-point (pos color)
+  (progn
+    (message "%d %s" pos color)
+    (put-text-property
+     pos (+ pos 1)
+     'face `(:foreground ,color))))
+(defun constants-game-checker()
+  (let ((euler (get-constant-value 'math 'euler)))
+    (message "%s  == %s" (char-to-string (char-before)) (substring euler (- (point) 2) (- (point) 1)))
+    (if (equal (char-to-string (char-before)) (substring euler (- (point) 2) (- (point) 1)))
+	(highlight-point (- (point) 1) constants-game-true-color)   
+      (highlight-point (- (point) 1) constants-game-false-color)   
+      )
+    )
+  )
 (defun constants-game()
   "Test your skills with memorization of constants numbers"
   (interactive)
+  (generate-new-buffer constants-game-buffer-name)
+  (display-buffer constants-game-buffer-name)
+  (with-current-buffer constants-game-buffer-name
+    (add-hook 'post-self-insert-hook 'constants-game-checker nil 'local))
+
   )
 
-(get-constant 'math 'pi)
-(get-constant-value 'math 'euler)
 
-(defun highlight-point (color)
-  (set-text-properties
-   (point) (+ (point) 1)
-   `(font-lock-face (:background color)
-		    hightlighted t)))
+
+
