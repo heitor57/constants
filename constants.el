@@ -9,7 +9,7 @@
 		   (euler . ,(calc-eval `("evalv(e)" calc-internal-prec ,constants-precision)))
 		   )
 		  (physics
-		   (elementary charge . 1.602e-19)
+		   (elementary-charge . 1.602e-19)
 		   (gravity . 6.674e-11)
 		   )
 		  ))
