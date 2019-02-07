@@ -68,7 +68,7 @@
   )
 
 (defun x-open-me ()
-  "open a file, using current line as file name/path"
+  "open a buffer using current line as buffer name"
   (interactive)
   (switch-to-buffer
    (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
