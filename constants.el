@@ -1,0 +1,52 @@
+(setq constants-precision 100)
+(setq constants `(
+		  (math
+		   (pi . ,(calc-eval `("evalv(pi)" calc-internal-prec ,constants-precision)))
+		   (euler . ,(calc-eval `("evalv(e)" calc-internal-prec ,constants-precision)))
+		   )
+		  (physics
+		   (elementary charge . 1.602e-19)
+		   (gravity . 6.674e-11)
+		   )
+		  ))
+(defun get-constant(category name)
+  (assoc name (assoc category constants)))
+(defun get-constant-value(category name)
+  (cdr (assoc name (assoc category constants))))
+(defun add-category (category)
+  (add-to-list 'constants '(category))
+  )
+(defun add-constant(category key value)
+  (let ((temp (assoc category constants)))
+    (let ((temp-category
+	   (append temp (list (cons key value)))))
+      (print temp-category)
+      (setq constants (cons temp-category (assq-delete-all category constants)))
+      )
+    )
+  )
+(defun add-constant-start(category key value)
+  (let ((temp (assoc category constants)))
+    (let ((temp-category
+	   (acons key value temp)))
+      (print temp-category)
+      (setq constants (cons temp-category (assq-delete-all category constants)))
+      )
+    )
+  )
+(defun constant-print(constant)
+  (interactive "sName of constant: ")
+  (message "Not implemented"))
+(defun constants-game()
+  "Test your skills with memorization of constants numbers"
+  (interactive)
+  )
+
+(get-constant 'math 'pi)
+(get-constant-value 'math 'euler)
+
+(defun highlight-point (color)
+  (set-text-properties
+   (point) (+ (point) 1)
+   `(font-lock-face (:background color)
+		    hightlighted t)))
