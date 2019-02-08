@@ -72,8 +72,9 @@
   (interactive)
   (switch-to-buffer
    (buffer-substring-no-properties (line-beginning-position) (line-end-position)))
+  (erase-buffer)
   (setq constants-game-current-constant (buffer-name))
-(add-hook 'post-self-insert-hook 'constants-game-checker nil 'local)
+  (add-hook 'post-self-insert-hook 'constants-game-checker nil 'local)
   )
 
 (defvar x-keymap nil "game option keymap")
