@@ -7,6 +7,8 @@
 		  (math
 		   (pi . ,(calc-eval `("evalv(pi)" calc-internal-prec ,constants-precision)))
 		   (euler . ,(calc-eval `("evalv(e)" calc-internal-prec ,constants-precision)))
+		   (gamma . ,(calc-eval `("evalv(gamma)" calc-internal-prec ,constants-precision)))
+		   (phi . ,(calc-eval `("evalv(phi)" calc-internal-prec ,constants-precision)))
 		   )
 		  (physics
 		   (elementary-charge . 1.602e-19)
