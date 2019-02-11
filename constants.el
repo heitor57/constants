@@ -48,9 +48,9 @@
     (cdr (assoc key constants))
     )
   )
-(defun constant-print(constant)
+(defun constants-print(constant)
   (interactive "sName of constant: ")
-  (message "Not implemented"))
+  (message (get-constant-value-no-cat (intern constant))))
 (defun highlight-point (pos color)
   "Highlight character, mainly used to display game true or false response"
   (progn
