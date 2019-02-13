@@ -13,6 +13,7 @@
 		  (physics
 		   (elementary-charge . 1.602e-19)
 		   (gravity . 6.674e-11)
+		   (mol . 6.022e+23)
 		   )
 		  ))
 (defun get-constant(category name)
