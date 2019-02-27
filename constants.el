@@ -1,8 +1,29 @@
-(setq constants-precision 100)
-(setq constants-game-true-color "Green")
-(setq constants-game-false-color "Red")
+(defgroup constants nil
+  "Tool for constants."
+  :group 'tools)
+
+(defcustom constants-precision 100
+  "The constants precision."
+  :type 'integer
+  :group 'constants)
+
+(defcustom constants-game-true-color "Green"
+  "In constants-game this is the color if a digit is successful."
+  :type 'string
+  :group 'constants)
+
+(defcustom constants-game-false-color "Red"
+  "In constants-game this is the color if a digit is wrong."
+  :type 'string
+  :group 'constants)
+
+(defcustom constants-game-buffer-name "constants-game"
+  "This is the name of the constants-game buffer."
+  :type 'string
+  :group 'constants)
+
 (setq constants-game-current-constant nil) 
-(setq constants-game-buffer-name "constants-game")
+
 (setq constants `(
 		  (math
 		   (pi . ,(calc-eval `("evalv(pi)" calc-internal-prec ,constants-precision)))
