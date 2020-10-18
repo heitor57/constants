@@ -64,7 +64,7 @@
   )
 
 (defun get-constant-value-no-cat(key)
-  "Get constant value without category but is have more cost"
+  "Get constant value without category but it has more cost"
   (let* ((cs (copy-tree constants))
 	 (constants (mapcan 'cdr cs)))
     (cdr (assoc key constants))
